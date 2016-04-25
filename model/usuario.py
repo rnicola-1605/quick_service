@@ -33,6 +33,15 @@ class Usuario(object):
     def getIdTipo(self):
         return self.id_tipo_usuario
 
+    def getCep(self):
+        return self.cep_atual
+
+    def getLatitude(self):
+        return self.latidade_atual
+
+    def getLongitude(self):
+        return self.longitude_atual
+
     def setId(self, id):
         self.id_usuario = id
 
@@ -41,6 +50,15 @@ class Usuario(object):
 
     def setIdTipo(self, id):
         self.id_tipo_usuario = id
+
+    def setCep(self, c):
+        self.cep_atual = c
+
+    def setLatitude(self, l):
+        self.latidade_atual = l
+
+    def setLongitude(self, l):
+        self.longitude_atual = l
 
     def persiste(self, id_usuario, id_tipo_usuario,
                  nome, ddd_telefone, telefone,

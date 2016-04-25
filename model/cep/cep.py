@@ -1,8 +1,9 @@
 # -*- coding: iso-8859-1 -*-
 from math import sin, cos, acos, radians, degrees
-from OFS.SimpleItem import SimpleItem
+# from OFS.SimpleItem import SimpleItem
 # from Products.ZSQLMethods.SQL import SQL
 # from Globals import package_home
+from urllib2 import urlopen, Request
 import os
 import urllib2
 import json
@@ -24,10 +25,12 @@ class CepStatus(object):
         return cls._desc[code]
 
 
-class CepData(SimpleItem):
+class CepData(object):
     """
     Class que busca dados de um Cep via web
     """
+
+    self.tokenCepAberto = "f8f24a16f6b33ede8085d37a4994ceba"
 
     def get_id_cidade_uf(self, data):
         """
@@ -89,6 +92,26 @@ class CepData(SimpleItem):
             self.printed += "Cep data: " + str(data) + "\n"
 
         return self.update_cep_data(data)
+
+    def get_cep_full(self, cep):
+        """
+        Get todas as info do cep em forma de json
+        """
+
+        if len(str(cep)) == 7:
+            cep = "0" + cep
+
+        headers = {'Authorization': 'Token token= %s' % (self.tokenCepAberto)}
+        url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=%s' % cep
+        print url
+        resposta = urllib2.urlopen(url)
+
+        try:
+            return json.loads(resposta.read())
+        except Exception, e:
+            raise Exception(e)
+            return None
+
 
     def update_cep_data(self, data):
         """
