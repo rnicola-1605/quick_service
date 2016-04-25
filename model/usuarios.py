@@ -17,7 +17,7 @@ class UsuariosPersistencia(object):
                     nome=None, ddd_telefone=None, telefone=None,
                     ddd_celular=None, celular=None,
                     email=None, cep_atual=None,
-                    latidade_atual=None, longitude_atual=None):
+                    latitude_atual=None, longitude_atual=None):
 
         if id_tipo_usuario is None or not id_tipo_usuario:
             return UsuariosPersistente(id_usuario=id_usuario,
@@ -26,7 +26,7 @@ class UsuariosPersistencia(object):
                                        telefone=telefone,
                                        ddd_celular=ddd_celular, celular=celular,
                                        email=email, cep_atual=cep_atual,
-                                       latidade_atual=latidade_atual,
+                                       latitude_atual=latitude_atual,
                                        longitude_atual=longitude_atual)
         elif id_tipo_usuario == 1:
             return PrestadorPersistente(id_usuario=id_usuario,
@@ -35,7 +35,7 @@ class UsuariosPersistencia(object):
                                         telefone=telefone,
                                         ddd_celular=ddd_celular, celular=celular,
                                         email=email, cep_atual=cep_atual,
-                                        latidade_atual=latidade_atual,
+                                        latitude_atual=latitude_atual,
                                         longitude_atual=longitude_atual)
         elif id_tipo_usuario == 2:
             return ClientePersistente(id_usuario=id_usuario,
@@ -44,7 +44,7 @@ class UsuariosPersistencia(object):
                                       telefone=telefone,
                                       ddd_celular=ddd_celular, celular=celular,
                                       email=email, cep_atual=cep_atual,
-                                      latidade_atual=latidade_atual,
+                                      latitude_atual=latitude_atual,
                                       longitude_atual=longitude_atual)
 
     def buscarUsuario(self, id_usuario=None,
@@ -90,7 +90,7 @@ class UsuariosPersistente(Usuario):
                  nome=None, ddd_telefone=None, telefone=None,
                  ddd_celular=None, celular=None,
                  email=None, cep_atual=None,
-                 latidade_atual=None, longitude_atual=None):
+                 latitude_atual=None, longitude_atual=None):
 
         Usuario.__init__(id_usuario=id_usuario,
                          id_tipo_usuario=id_tipo_usuario,
@@ -98,5 +98,5 @@ class UsuariosPersistente(Usuario):
                          telefone=telefone,
                          ddd_celular=ddd_celular, celular=celular,
                          email=email, cep_atual=cep_atual,
-                         latidade_atual=latidade_atual,
+                         latitude_atual=latitude_atual,
                          longitude_atual=longitude_atual)

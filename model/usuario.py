@@ -11,7 +11,7 @@ class Usuario(object):
                  nome=None, ddd_telefone=None, telefone=None,
                  ddd_celular=None, celular=None,
                  email=None, cep_atual=None,
-                 latidade_atual=None, longitude_atual=None):
+                 latitude_atual=None, longitude_atual=None):
         self.id_usuario = id_usuario
         self.id_tipo_usuario = id_tipo_usuario
         self.nome = nome
@@ -21,7 +21,7 @@ class Usuario(object):
         self.celular = celular
         self.email = email
         self.cep_atual = cep_atual
-        self.latidade_atual = latidade_atual
+        self.latitude_atual = latitude_atual
         self.longitude_atual = longitude_atual
 
     def getId(self):
@@ -37,7 +37,7 @@ class Usuario(object):
         return self.cep_atual
 
     def getLatitude(self):
-        return self.latidade_atual
+        return self.latitude_atual
 
     def getLongitude(self):
         return self.longitude_atual
@@ -55,7 +55,7 @@ class Usuario(object):
         self.cep_atual = c
 
     def setLatitude(self, l):
-        self.latidade_atual = l
+        self.latitude_atual = l
 
     def setLongitude(self, l):
         self.longitude_atual = l
@@ -64,7 +64,7 @@ class Usuario(object):
                  nome, ddd_telefone, telefone,
                  ddd_celular, celular,
                  email, cep_atual,
-                 latidade_atual, longitude_atual):
+                 latitude_atual, longitude_atual):
 
         self.setId(id_usuario)
         self.setNome(nome)
@@ -75,7 +75,7 @@ class Usuario(object):
         self.celular = celular
         self.email = email
         self.cep_atual = cep_atual
-        self.latidade_atual = latidade_atual
+        self.latitude_atual = latitude_atual
         self.longitude_atual = longitude_atual
 
     def getToString(self):
@@ -100,7 +100,7 @@ class Usuario(object):
             "nome, ddd_telefone," +\
             "telefone,  ddd_celular," +\
             "celular, email, cep_atual," +\
-            "latidade_atual, longitude_atual, senha) VALUES(" +\
+            "latitude_atual, longitude_atual, senha) VALUES(" +\
             "%d, %s, %d, %d, %d, %d, %s, %s, %f, %f, %s);"
 
         query % (self.getIdTipo(), self.getNome(),
@@ -108,7 +108,7 @@ class Usuario(object):
                  self.ddd_celular, self.celular,
                  self.email,
                  self.cep_atual and self.cep_atual or 'null',
-                 self.latidade_atual and self.latidade_atual or 'null',
+                 self.latitude_atual and self.latitude_atual or 'null',
                  self.longitude_atual and self.longitude_atual or 'null')
 
         self.conexao.execute(query)
@@ -126,7 +126,7 @@ class Usuario(object):
             " AND celular = %d" +\
             " AND email = %s" +\
             " AND cep_atual = %s" +\
-            " AND latidade_atual = %f" +\
+            " AND latitude_atual = %f" +\
             " AND longitude_atual = %f"
 
         query % (self.getNome(),
@@ -134,7 +134,7 @@ class Usuario(object):
                  self.ddd_celular, self.celular,
                  self.email,
                  self.cep_atual and self.cep_atual or 'null',
-                 self.latidade_atual and self.latidade_atual or 'null',
+                 self.latitude_atual and self.latitude_atual or 'null',
                  self.longitude_atual and self.longitude_atual or 'null')
 
         if self.getId() and self.getId() > 0:
