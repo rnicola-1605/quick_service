@@ -1,3 +1,4 @@
+from DB.BancoDB import Banco
 import os
 
 
@@ -29,11 +30,17 @@ class Usuario(object):
     def getNome(self):
         return self.nome
 
+    def getIdTipo(self):
+        return self.id_tipo_usuario
+
     def setId(self, id):
         self.id_usuario = id
 
     def setNome(self, nome):
         self.nome = nome
+
+    def setIdTipo(self, id):
+        self.id_tipo_usuario = id
 
     def persiste(self, id_usuario, id_tipo_usuario,
                  nome, ddd_telefone, telefone,
@@ -68,8 +75,55 @@ class Usuario(object):
 
     def inserir(self):
 
-        return 'nao implementado'
+        self.conexao = Banco().conectar()
+
+        query = "INSERT INTO usuarios (" +\
+            "id_tipo_usuario," +\
+            "nome, ddd_telefone," +\
+            "telefone,  ddd_celular," +\
+            "celular, email, cep_atual," +\
+            "latidade_atual, longitude_atual, senha) VALUES(" +\
+            "%d, %s, %d, %d, %d, %d, %s, %s, %f, %f, %s);"
+
+        query % (self.getIdTipo(), self.getNome(),
+                 self.ddd_telefone, self.telefone,
+                 self.ddd_celular, self.celular,
+                 self.email,
+                 self.cep_atual and self.cep_atual or 'null',
+                 self.latidade_atual and self.latidade_atual or 'null',
+                 self.longitude_atual and self.longitude_atual or 'null')
+
+        self.conexao.execute(query)
+
+        self.conexao.close()
 
     def mapear(self):
 
-        return 'nao implementado'
+        self.conexao = Banco().conectar()
+
+        query = "UPDATE usuarios SET nome = %s " +\
+            " AND ddd_telefone = %d" +\
+            " AND telefone = %d" +\
+            " AND ddd_celular = %d" +\
+            " AND celular = %d" +\
+            " AND email = %s" +\
+            " AND cep_atual = %s" +\
+            " AND latidade_atual = %f" +\
+            " AND longitude_atual = %f"
+
+        query % (self.getNome(),
+                 self.ddd_telefone, self.telefone,
+                 self.ddd_celular, self.celular,
+                 self.email,
+                 self.cep_atual and self.cep_atual or 'null',
+                 self.latidade_atual and self.latidade_atual or 'null',
+                 self.longitude_atual and self.longitude_atual or 'null')
+
+        if self.getId() and self.getId() > 0:
+            query += " WHERE id_usuario = %d"
+
+        query % self.getId()
+
+        self.conexao.execute(query)
+
+        self.conexao.close()

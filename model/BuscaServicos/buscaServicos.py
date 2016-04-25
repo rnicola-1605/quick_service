@@ -12,4 +12,4 @@ class BuscaServicos(object):
     def buscarServicoProximo(self, usuario, servicos,
                              proximidade=5):
 
-        query = "";
+        query = ""
