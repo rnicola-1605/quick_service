@@ -1,4 +1,5 @@
 from DB.BancoDB import Banco
+from pesquisaBuscasServico import pesquisaBuscaServico
 
 
 class BuscaServicos(object):
@@ -8,6 +9,7 @@ class BuscaServicos(object):
 
     def __init__(self):
         self.conexao = Banco().conectar()
+        self.pesquisa = pesquisaBuscaServico()
 
     def buscarServicoProximo(self, usuario, servicos,
                              proximidade=5):

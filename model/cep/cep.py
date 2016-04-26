@@ -32,21 +32,6 @@ class CepData(object):
 
     self.tokenCepAberto = "f8f24a16f6b33ede8085d37a4994ceba"
 
-    def get_id_cidade_uf(self, data):
-        """
-        Busca o ID da cidade e UF
-        """
-
-        for i in self._zsql_selIdCidade(
-                cidade=data['localidade'], uf=data['uf']):
-            id_cidade = i.id_cidade
-            id_uf = i.id_uf
-
-        try:
-            return id_cidade, id_uf
-        except:
-            raise Exception('Sem cidade ou UF para: ' + str(data))
-
     def busca_ceps(self):
         """
         Busca um cep aleatorio para atualizar (Ele tem que estar incompleto)
@@ -55,15 +40,15 @@ class CepData(object):
         cep = None
         self.printed = ""
 
-        for i in self._zsql_selCepsToUpdate():
-            if i.id_cidade is not None:
-                pass
-            elif len(str(i.cep)) < 7:
-                pass
-            else:
-                cep = i.cep
-                self.printed = "Cep: " + str(cep) + "\n"
-                break
+        # for i in self._zsql_selCepsToUpdate():
+        # if i.id_cidade is not None:
+        #     pass
+        # elif len(str(i.cep)) < 7:
+        #     pass
+        # else:
+        #     cep = i.cep
+        #     self.printed = "Cep: " + str(cep) + "\n"
+        #     break
 
         if cep:
             return self.get_cep_data(cep)
