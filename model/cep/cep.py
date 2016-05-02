@@ -1,8 +1,5 @@
 # -*- coding: iso-8859-1 -*-
 from math import sin, cos, acos, radians, degrees
-# from OFS.SimpleItem import SimpleItem
-# from Products.ZSQLMethods.SQL import SQL
-# from Globals import package_home
 from urllib2 import urlopen, Request
 import os
 import urllib2
@@ -30,7 +27,7 @@ class CepData(object):
     Class que busca dados de um Cep via web
     """
 
-    self.tokenCepAberto = "f8f24a16f6b33ede8085d37a4994ceba"
+    tokenCepAberto = "f8f24a16f6b33ede8085d37a4994ceba"
 
     def busca_ceps(self):
         """
@@ -86,17 +83,19 @@ class CepData(object):
         if len(str(cep)) == 7:
             cep = "0" + cep
 
-        headers = {'Authorization': 'Token token= %s' % (self.tokenCepAberto)}
+        cep = cep.replace('-', '')
+
+        headers = {
+            'Authorization': 'Token token=f8f24a16f6b33ede8085d37a4994ceba'}
         url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=%s' % cep
-        print url
-        resposta = urllib2.urlopen(url)
+        # resposta = urllib2.urlopen(url)
 
         try:
-            return json.loads(resposta.read())
+            resposta = urlopen(Request(url, None, headers)).read()
+            print resposta
+            return json.loads(resposta)
         except Exception, e:
-            raise Exception(e)
             return None
-
 
     def update_cep_data(self, data):
         """
@@ -125,6 +124,7 @@ class CepData(object):
 
 class Cep(object):
     """ Classe que define operacoes com CEPs """
+
     def __init__(self, num, uf, cidade, logradouro,
                  bairro, lat, lng, idStatus):
         self._num = num
@@ -148,7 +148,7 @@ class Cep(object):
         return not self.__eq__(other)
 
     def __sub__(self, other):
-        " Retorna a distÃ¢ncia em km entre os dois operandos "
+        " Retorna a distância em km entre os dois operandos "
         try:
             return self.calc_dist_geopos(other)
         except AttributeError:
@@ -211,6 +211,7 @@ class Cep(object):
 
 
 class BdCepFactory(object):
+
     def create(self, queryResult):
         return Cep(queryResult['cep'], queryResult['uf'],
                    queryResult['cidade'], queryResult['logradouro'],
@@ -218,7 +219,7 @@ class BdCepFactory(object):
                    queryResult['longitude'], queryResult['status'])
 
 
-class CepSearch(SimpleItem):
+class CepSearch():
     " Consultor de CEPs "
 
     cepFactory = BdCepFactory()
@@ -247,8 +248,3 @@ class CepSearch(SimpleItem):
         " Retorna um objeto Cep "
         return self.cepFactory.create(
             self._zsql_selCepsByNum(cep=cep2int(cepStr))[0])
-
-    _zsql_selCepsByNum = SQL(
-        '_zsql_selCepsByNum', '', 'connection', 'cep',
-        open(product_path + 'sql/selCepsByNum.sql').read()
-    )

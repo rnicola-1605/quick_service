@@ -1,5 +1,6 @@
 from DB.BancoDB import Banco
-from usuario import Usuario, UsuariosPersistente
+from usuario import Usuario
+from pesquisaUsuarios import pesquisaUsuarios
 from prestador import Prestador, PrestadorPersistente
 from cliente import Cliente, ClientePersistente
 
@@ -12,6 +13,7 @@ class UsuariosPersistencia(object):
 
     def __init__(self):
         self.conexao = Banco().conectar()
+        self.pesquisa = pesquisaUsuarios()
 
     def criaUsuario(self, id_usuario=None, id_tipo_usuario=None,
                     nome=None, ddd_telefone=None, telefone=None,
@@ -57,28 +59,41 @@ class UsuariosPersistencia(object):
         query = 'SELECT * FROM usuarios WHERE 1 = 1 '
 
         if id_usuario and isinstance(id_usuario, int) and id_usuario > 0:
-            query.join(' AND id_usuario = %d', id_usuario)
+            query.join(' AND id_usuario = %d' % id_usuario)
         if email and len(email) > 10:
-            query.join(' AND email = %s', email)
+            query.join(' AND email = %s' % email)
 
         for a in self.conexao.execute(query):
-            return criaUsuario(id_usuario=id_usuario,
-                               id_tipo_usuario=id_tipo_usuario,
-                               nome=nome,
-                               ddd_telefone=ddd_telefone,
-                               telefone=telefone,
-                               ddd_celular=ddd_celular,
-                               celular=celular,
-                               email=email,
-                               cep_atual=cep_atual,
-                               latitude_atual=latitude_atual,
-                               logitude_atual=logitude_atual)
+            return self.criaUsuario(id_usuario=id_usuario,
+                                    id_tipo_usuario=id_tipo_usuario,
+                                    nome=nome,
+                                    ddd_telefone=ddd_telefone,
+                                    telefone=telefone,
+                                    ddd_celular=ddd_celular,
+                                    celular=celular,
+                                    email=email,
+                                    cep_atual=cep_atual,
+                                    latitude_atual=latitude_atual,
+                                    logitude_atual=logitude_atual)
         else:
-            return criaUsuario()
+            return self.criaUsuario()
 
     def buscaListaUsuarios(self, lista=None):
 
-        return None
+        lst = []
+
+        if lista is None:
+            for u in self.pesquisa.busca_usuarios_cep_desatualizado():
+                u = dict(u)
+                lst.append(self.criaUsuario(
+                    id_usuario=u['id_usuario'],
+                    id_tipo_usuario=u['id_tipo_usuario'],
+                    nome=u['nome'],
+                    email=u['email'],
+                    cep_atual=u['cep_atual'],
+                    latitude_atual=u['latitude_atual'],
+                    longitude_atual=u['logitude_atual']))
+        return lst
 
 
 class UsuariosPersistente(Usuario):

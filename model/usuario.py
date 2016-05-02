@@ -89,7 +89,7 @@ class Usuario(object):
                 'email': self.email,
                 'cep_atual': self.cep_atual,
                 'latitude_atual': self.latitude_atual,
-                'logitude_atual': self.logitude_atual}
+                'logitude_atual': self.longitude_atual}
 
     def inserir(self):
 
