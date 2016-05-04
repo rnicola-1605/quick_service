@@ -1,5 +1,5 @@
 from pesquisaBuscasServico import pesquisaBuscaServico
-
+from model.servicos import Servico
 
 class BuscaServicos(object):
     """
@@ -15,5 +15,5 @@ class BuscaServicos(object):
         pesquisa_srv = [Servico(id_servico=x) for x in servicos]
 
         return self.pesquisa.busca_usuarios_proximos_by_coord(
-            id_usuario=usuario.getId(),
+            objUsuario=usuario,
             lista_servico=pesquisa_srv)
