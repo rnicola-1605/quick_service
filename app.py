@@ -23,9 +23,16 @@ def cadastra_cliente():
     return None
 
 
-@app.route('/cadastra')
+@app.route('/cadastra', methods=["PUT", "POST"])
 def cadastra():
-    return None
+    if request.headers['Content-Type'] != 'application/json':
+        return jsonify({'erro': 'Necessario a requisicao ser em json'})
+    else:
+        # requisicao json (ok)
+        rqst = request.get_json(force=True)
+        json.dumps(rqst)
+
+        raise Exception(rqst)
 
 
 @app.route('/atualiza_ceps')
@@ -35,12 +42,10 @@ def atualiza_ceps():
 
     for user in uPersistencia.buscaListaUsuarios():
         user.atualizar_cep(cep_novo=user.getCep())
-        print user.getToString()
-        print '\n'
-        time.sleep(5)
         atualizados.append({'id_usuario': user.getId(),
                             'nome': user.getNome(),
                             'cep': user.getCep()})
+        time.sleep(5)
     return jsonify({'atualizados': atualizados})
 
 
