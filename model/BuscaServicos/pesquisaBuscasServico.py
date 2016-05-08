@@ -73,6 +73,31 @@ class pesquisaBuscaServico(object):
 
         return sql
 
+    def busca_servico_by_usuario(self, id_servico,
+                                 id_usuario):
+
+        self.conexao = Banco()
+        cur = self.conexao.conectar()
+
+        self.query = """SELECT
+                            id_usuario,
+                            id_servico,
+                            data_inicio,
+                            valido
+                        FROM
+                            usuarios_prestam_servicos
+                        WHERE
+                            id_servico = %d 
+                            AND id_usuario = %d 
+                            AND valido is true """ % (id_servico,
+                                                      id_usuario)
+
+        cur.execute(self.query)
+        sql = cur.fetchall()
+        cur.close()
+
+        return sql
+
     def busca_usuarios_proximos_by_cep(self, cep_busca):
 
         self.query = ""

@@ -1,5 +1,6 @@
 from flask import Flask, request, current_app, render_template
 from model.usuarios import UsuariosPersistencia
+from model.BuscaServicos.buscaServicos import BuscaServicos
 
 
 class Usuarios(object):
@@ -70,10 +71,50 @@ class Usuarios(object):
                     'msg': 'adicionar servico apenas valido para prestadores',
                     'dados': dados}
         else:
+            # instancia da model de servicos
+            self.srv = BuscaServicos()
+
+            if self.srv.busca_servico_usuario(id_usuario=self.user.getId(),
+                                              id_servico=dados['id_servico']):
+                # usuario ja presta o servico solicitado para cadastrar.
+                # entao retornamos msg de operacao nao concluida
+                return {'status': 0,
+                        'msg': (('%s (%d) ja presta esse servico,' +
+                                 ' operacao cancelada.') % (self.getNome(),
+                                                            self.getId())),
+                        'dados': dados}
+
             res = self.user.adicionar_servico(id_servico=dados['id_servico'])
 
             return {'status': (res and 1 or 0),
                     'msg': (res and 'servico cadastrado com sucesso' or
+                            'servico nao cadastrado'),
+                    'dados': dados}
+
+    def deleta_servico(self, dados={}):
+        """
+        Recebe na request dict para deletar um servico que um prestador
+        presta
+        """
+
+        self.user = self.uPersistencia.buscarUsuario(
+            id_usuario=dados['id_usuario'])
+
+        if not self.user.getId():
+            return {'status': False,
+                    'msg': 'usuario nao existe',
+                    'dados': dados}
+        elif self.user.getIdTipo() != 2:
+            # apenas usuarios do tipo prestador (2) podem adicionar
+            # servicos
+            return {'status': False,
+                    'msg': 'deletar servicos valido apenas para prestadores',
+                    'dados': dados}
+        else:
+            res = self.user.deletar_servico(id_servico=dados['id_servico'])
+
+            return {'status': (res and 1 or 0),
+                    'msg': (res and 'servico deletado com sucesso' or
                             'servico nao cadastrado'),
                     'dados': dados}
 

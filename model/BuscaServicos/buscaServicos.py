@@ -13,9 +13,10 @@ class BuscaServicos(object):
     def busca_servicos(self, id_servico=None, lista=[],
                        id_tipo_servico=None):
 
-        return self.pesquisa.busca_servicos(id_servico=id_servico,
-                                            lista=lista,
-                                            id_tipo_servico=id_tipo_servico)
+        return self.pesquisa.busca_servicos(
+            id_servico=id_servico,
+            lista=lista,
+            id_tipo_servico=id_tipo_servico)
 
     def buscarServicoProximo(self, usuario, servicos,
                              proximidade=4.99):
@@ -25,3 +26,9 @@ class BuscaServicos(object):
         return self.pesquisa.busca_usuarios_proximos_by_coord(
             objUsuario=usuario,
             lista_servico=pesquisa_srv)
+
+    def busca_servico_usuario(self, id_usuario, id_servico):
+
+        return self.pesquisa.busca_servico_by_usuario(
+            id_servico=id_servico,
+            id_usuario=id_usuario)

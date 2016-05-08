@@ -116,6 +116,24 @@ class pesquisaUsuarios(object):
 
         return self.ok
 
+    def deletar_servico(self, id_usuario, id_servico):
+
+        self.query = """ DELETE FROM usuarios_prestam_servicos
+                         WHERE id_usuario = %d AND id_servico = %d; """
+
+        try:
+            self.conexao = Banco()
+            cur = self.conexao.conectar()
+            cur.execute(self.query)
+            self.conexao.getConector().commit()
+            self.ok = True
+        except Exception, e:
+            self.ok = False
+
+        self.conexao.close()
+
+        return self.ok
+
     def _atualizaCep(self, cep, latitude, longitude,
                      id_usuario):
 

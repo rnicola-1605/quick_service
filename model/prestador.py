@@ -57,6 +57,13 @@ class PrestadorPersistente(Prestador):
                 id_usuario=self.getId(),
                 id_servico=id_servico)
 
+    def deletar_servico(self, id_servico):
+
+        if self.getId() and id_servico:
+            self.pesquisaUsuarios.deletar_servico(
+                id_usuario=self.getId(),
+                id_servico=id_servico)
+
     def atualizar_cep(self, cep_novo):
 
         cep_novo = cep2str(cep_novo)

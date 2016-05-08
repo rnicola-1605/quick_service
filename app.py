@@ -107,6 +107,46 @@ def adiciona_servico():
                             'data': res['dados']})
 
 
+@app.route('/deleta_servico', methods=["PUT", "POST", "GET"])
+def deleta_servico():
+    """
+    REQUISICAO APENAS JSON
+
+    deleta um servico que um prestador pode prestar.
+    apenas usuarios do tipo = 1 (prestador) podem utilizar esse metodo
+    """
+
+    if request.headers['Content-Type'] != 'application/json':
+        return jsonify({'erro': 'Necessario a requisicao ser em json'})
+    else:
+        campos_obrigatorios = ['id_usuario', 'id_servico']
+
+        # recebemos informacao em json
+        dados = json.loads(request.data.replace("\"", "\'").
+                           replace("\'", "\""))
+
+        for c in campos_obrigatorios:
+            if c not in dados.keys():
+                return jsonify(
+                    {'status': 0,
+                     'msg': 'REQUEST INVALIDA, PARAM ' +
+                     'INVALIDOS OU FALTANTES',
+                     'data': [nc for nc in campos_obrigatorios if
+                              nc not in dados.keys()]})
+
+        res = usuarios.deleta_servico(dados=dados)
+
+        if res['status'] is True:
+            # tudo ocorreu ok
+            return jsonify({'status': 1,
+                            'msg': res['msg'],
+                            'data': res['dados']})
+        else:
+            return jsonify({'status': 0,
+                            'msg': res['msg'],
+                            'data': res['dados']})
+
+
 @app.route('/lista_servicos')
 @app.route('/lista_servicos/<int:id_tipo_servico>')
 def lista_servicos(id_tipo_servico=None):
