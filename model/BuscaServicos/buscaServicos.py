@@ -1,6 +1,7 @@
 from pesquisaBuscasServico import pesquisaBuscaServico
 from model.servicos import Servico
 
+
 class BuscaServicos(object):
     """
     classe para buscar os servicos escolhidos mais proximo
@@ -8,6 +9,13 @@ class BuscaServicos(object):
 
     def __init__(self):
         self.pesquisa = pesquisaBuscaServico()
+
+    def busca_servicos(self, id_servico=None, lista=[],
+                       id_tipo_servico=None):
+
+        return self.pesquisa.busca_servicos(id_servico=id_servico,
+                                            lista=lista,
+                                            id_tipo_servico=id_tipo_servico)
 
     def buscarServicoProximo(self, usuario, servicos,
                              proximidade=4.99):

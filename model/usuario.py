@@ -111,22 +111,6 @@ class Usuario(object):
             self.getLongitude(),
             self.senha)
 
-        # query = "INSERT INTO usuarios (" +\
-        #     "id_tipo_usuario," +\
-        #     "nome, ddd_telefone," +\
-        #     "telefone,  ddd_celular," +\
-        #     "celular, email, cep_atual," +\
-        #     "latitude_atual, longitude_atual, senha) VALUES(" +\
-        #     "%d, %s, %d, %d, %d, %d, %s, %s, %f, %f, %s);"
-
-        # query % (self.getIdTipo(), self.getNome(),
-        #          self.ddd_telefone, self.telefone,
-        #          self.ddd_celular, self.celular,
-        #          self.email,
-        #          self.cep_atual and self.cep_atual or 'null',
-        #          self.latitude_atual and self.latitude_atual or 'null',
-        #          self.longitude_atual and self.longitude_atual or 'null')
-
     def mapear(self):
 
         self.conexao = Banco().conectar()

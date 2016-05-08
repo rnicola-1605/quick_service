@@ -3,10 +3,14 @@ from model.usuarios import UsuariosPersistencia
 from model.BuscaServicos.buscaServicos import BuscaServicos
 from model.DB.BancoDB import Banco
 from controller.usuarios import Usuarios as UsuariosController
+from controller.servicos import Servicos as ServicosController
 import json as pyjson
 import time
 
 app = Flask(__name__)
+
+# instancia controller usuarios
+usuarios = UsuariosController()
 
 
 @app.errorhandler(404)
@@ -19,8 +23,14 @@ def index():
     return "<h1 style='color: red'>webservice online.</h1>"
 
 
-@app.route('/cadastra', methods=["PUT", "POST"])
+@app.route('/cadastra', methods=["PUT", "POST", "GET"])
 def cadastra():
+    """
+    REQUISICAO APENAS EM JSON
+
+    adiciona um novo tipo de usuario
+    """
+
     if request.headers['Content-Type'] != 'application/json':
         return jsonify({'erro': 'Necessario a requisicao ser em json'})
     else:
@@ -32,29 +42,88 @@ def cadastra():
                                'longitude']
 
         # recebemos informacao em json
-        print request.data
         dados = json.loads(request.data.replace("\"", "\'").
                            replace("\'", "\""))
 
         for c in campos_obrigatorios:
             if c not in dados.keys():
-                return jsonify({'status': 0,
-                                'msg': 'REQUEST INVALIDA.',
-                                'data': request.data})
+                return jsonify(
+                    {'status': 0,
+                     'msg': 'REQUEST INVALIDA, PARAM ' +
+                     'INVALIDOS OU FALTANTES',
+                     'data': [nc for nc in campos_obrigatorios if
+                              nc not in dados.keys()]})
 
-        self.usuarios = UsuariosController()
-
-        res = self.usuarios.cadastrar_usuario(dados=dados)
+        res = usuarios.cadastrar_usuario(dados=dados)
 
         if res['status'] is True:
             # tudo ocorreu ok
             return jsonify({'status': 1,
-                            'msg': 'Usuario cadastrado com sucesso.',
+                            'msg': res['msg'],
                             'data': res['dados']})
         else:
             return jsonify({'status': 0,
-                            'msg': 'Parametros faltantes, dados nao gravados.',
+                            'msg': res['msg'],
                             'data': res['dados']})
+
+
+@app.route('/adiciona_servico', methods=["PUT", "POST", "GET"])
+def adiciona_servico():
+    """
+    REQUISICAO APENAS JSON
+
+    adiciona um servico que um prestador pode prestar.
+    apenas usuarios do tipo = 1 (prestador) podem utilizar esse metodo
+    """
+
+    if request.headers['Content-Type'] != 'application/json':
+        return jsonify({'erro': 'Necessario a requisicao ser em json'})
+    else:
+        campos_obrigatorios = ['id_usuario', 'id_servico']
+
+        # recebemos informacao em json
+        dados = json.loads(request.data.replace("\"", "\'").
+                           replace("\'", "\""))
+
+        for c in campos_obrigatorios:
+            if c not in dados.keys():
+                return jsonify(
+                    {'status': 0,
+                     'msg': 'REQUEST INVALIDA, PARAM ' +
+                     'INVALIDOS OU FALTANTES',
+                     'data': [nc for nc in campos_obrigatorios if
+                              nc not in dados.keys()]})
+
+        res = usuarios.adiciona_servico(dados=dados)
+
+        if res['status'] is True:
+            # tudo ocorreu ok
+            return jsonify({'status': 1,
+                            'msg': res['msg'],
+                            'data': res['dados']})
+        else:
+            return jsonify({'status': 0,
+                            'msg': res['msg'],
+                            'data': res['dados']})
+
+
+@app.route('/lista_servicos')
+@app.route('/lista_servicos/<int:id_tipo_servico>')
+def lista_servicos(id_tipo_servico=None):
+    """
+    Lista todos os servicos disponiveis
+    """
+
+    # instancia controller de servicos
+    servs = ServicosController()
+
+    res = servs.buscar_servicos(id_tipo_servico=id_tipo_servico)
+    if res and len(res) > 0:
+        return jsonify({'status': 1,
+                        'lista': res})
+    else:
+        return jsonify({'status': 0,
+                        'lista': res})
 
 
 @app.route('/atualiza_ceps')
@@ -125,16 +194,6 @@ def localiza_servicos(id_usuario=None, latitude=None,
             encode('utf-8')})
 
     return jsonify({'servicos': resultado})
-
-
-@app.route('/usuarios')
-def gusuarios():
-    return None
-
-
-@app.route('/usuarios')
-def cadastra_cliente():
-    return None
 
 
 @app.route('/bd')

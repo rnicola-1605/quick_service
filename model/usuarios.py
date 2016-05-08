@@ -56,12 +56,12 @@ class UsuariosPersistencia(object):
                 (id_usuario is None and email is None)):
             return [{}]
 
-        query = 'SELECT * FROM usuarios WHERE 1 = 1 '
+        query = "SELECT * FROM usuarios WHERE 1 = 1 "
 
         if id_usuario and isinstance(id_usuario, int) and id_usuario > 0:
-            query += ' AND id_usuario = %d' % id_usuario
+            query += " AND id_usuario = %d" % id_usuario
         if email and len(email) > 10:
-            query += ' AND email = %s' % email
+            query += " AND email = '%s'" % email
 
         self.conexao = Banco()
         cur = self.conexao.conectar()
@@ -114,7 +114,7 @@ class UsuariosPersistente(Usuario):
                  email=None, cep_atual=None,
                  latitude_atual=None, longitude_atual=None):
 
-        Usuario.__init__(id_usuario=id_usuario,
+        Usuario.__init__(self, id_usuario=id_usuario,
                          id_tipo_usuario=id_tipo_usuario,
                          nome=nome, ddd_telefone=ddd_telefone,
                          telefone=telefone,

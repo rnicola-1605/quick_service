@@ -19,9 +19,9 @@ class pesquisaUsuarios(object):
             nome, ddd_telefone,
             telefone,  ddd_celular,
             celular, email, cep_atual,
-            latitude_atual, longitude_atual, senha) VALUES( """
+            latitude_atual, logitude_atual, senha) VALUES( """
 
-        self.query += "%d, %s" % (id_tipo_usuario, nome)
+        self.query += "%d, '%s'" % (id_tipo_usuario, nome)
 
         self.query += (ddd_telefone is not None and
                        (", %d" % (ddd_telefone)) or ", null")
@@ -32,26 +32,51 @@ class pesquisaUsuarios(object):
         self.query += (celular is not None and
                        (", %d" % (celular)) or ", null")
         self.query += (email is not None and
-                       (", %s" % (email)) or ", null")
+                       (", '%s'" % (email)) or ", null")
         self.query += (cep_atual is not None and
-                       (", %s" % (cep_atual)) or ", null")
+                       (", '%s'" % (cep_atual)) or ", null")
         self.query += (latitude is not None and
                        (", %f" % (latitude)) or ", null")
         self.query += (longitude is not None and
                        (", %f" % (longitude)) or ", null")
         self.query += (senha is not None and
-                       (", %s" % (senha)) or ", null")
+                       (", '%s'" % (senha)) or ", null")
         self.query += ");"
 
         try:
             self.conexao = Banco()
             cur = self.conexao.conectar()
-
             cur.execute(self.query)
             self.conexao.getConector().commit()
             self.ok = True
         except Exception, e:
-            raise Exception(e)
+            self.ok = False
+
+        cur.close()
+
+        return self.ok
+
+    def atualizar_usuario(self, id_tipo_usuario, nome, ddd_telefone, telefone,
+                          ddd_celular, celular, email, cep_atual,
+                          latitude, longitude, senha):
+
+        self.query = """UPDATE usuarios SET nome = %s
+             AND ddd_telefone = %d
+             AND telefone = %d
+             AND ddd_celular = %d
+             AND celular = %d
+             AND email = %s
+             AND cep_atual = %s
+             AND latitude_atual = %f
+             AND longitude_atual = %f"""
+
+        try:
+            self.conexao = Banco()
+            cur = self.conexao.conectar()
+            cur.execute(self.query)
+            self.conexao.getConector().commit()
+            self.ok = True
+        except Exception, e:
             self.ok = False
 
         cur.close()
@@ -75,15 +100,14 @@ class pesquisaUsuarios(object):
 
         self.query = """INSERT INTO usuarios_prestam_servicos (
                         id_usuario,
-                        id_servico) VALUES (%d, %d)"""
-
-        self.query % (id_usuario,
-                      id_servico)
-
-        self.conexao = Banco().conectar()
+                        id_servico) VALUES (%d, %d)""" % (id_usuario,
+                                                          id_servico)
 
         try:
-            self.conexao.execute(self.query)
+            self.conexao = Banco()
+            cur = self.conexao.conectar()
+            cur.execute(self.query)
+            self.conexao.getConector().commit()
             self.ok = True
         except Exception, e:
             self.ok = False
@@ -107,7 +131,6 @@ class pesquisaUsuarios(object):
         try:
             self.conexao = Banco()
             cur = self.conexao.conectar()
-
             cur.execute(self.query)
             self.conexao.getConector().commit()
             self.ok = True
