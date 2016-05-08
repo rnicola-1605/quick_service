@@ -52,12 +52,23 @@ class ClientePersistente(Cliente):
 
         cep_novo = cep2str(cep_novo)
 
-        # if cep_novo != self.getCep():
         _dados = self.cepPersistencia.get_cep_full(cep=cep_novo)
 
         return self.pesquisaUsuarios._atualizaCep(
-            bairro=_dados['bairro'],
             cep=_dados['cep'],
             latitude=_dados['latitude'],
             longitude=_dados['longitude'],
-            logradouro=_dados['logradouro'])
+            logradouro=_dados['logradouro'],
+            id_usuario=self.getId())
+
+    def atualizar_cep_by_lat_long(self, lat_novo, long_novo):
+
+        _dados = self.cepPersistencia.\
+            get_cep_by_lat_long(lat=lat_novo,
+                                lngt=long_novo)
+
+        return self.pesquisaUsuarios._atualizaCep(
+            cep=_dados['cep'],
+            latitude=_dados['latitude'],
+            longitude=_dados['longitude'],
+            id_usuario=self.getId())

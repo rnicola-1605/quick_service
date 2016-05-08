@@ -27,7 +27,9 @@ class CepData(object):
     Class que busca dados de um Cep via web
     """
 
-    tokenCepAberto = "f8f24a16f6b33ede8085d37a4994ceba"
+    # tokenCepAberto = "f8f24a16f6b33ede8085d37a4994ceba"
+    headers = {'Authorization':
+               'Token token=f8f24a16f6b33ede8085d37a4994ceba'}
 
     def busca_ceps(self):
         """
@@ -35,17 +37,6 @@ class CepData(object):
         """
 
         cep = None
-        self.printed = ""
-
-        # for i in self._zsql_selCepsToUpdate():
-        # if i.id_cidade is not None:
-        #     pass
-        # elif len(str(i.cep)) < 7:
-        #     pass
-        # else:
-        #     cep = i.cep
-        #     self.printed = "Cep: " + str(cep) + "\n"
-        #     break
 
         if cep:
             return self.get_cep_data(cep)
@@ -85,16 +76,26 @@ class CepData(object):
 
         cep = cep.replace('-', '')
 
-        headers = {
-            'Authorization': 'Token token=f8f24a16f6b33ede8085d37a4994ceba'}
         url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=%s' % cep
-        # resposta = urllib2.urlopen(url)
 
         try:
-            resposta = urlopen(Request(url, None, headers)).read()
-            print resposta
+            resposta = urlopen(Request(url, None, self.headers)).read()
             return json.loads(resposta)
-        except Exception, e:
+        except Exception:
+            return None
+
+    def get_cep_by_lat_long(self, lat, lngt):
+        """
+        Get todas as info do cep (localizacao) em forma de json da api cep aberto
+        """
+
+        url = "http://www.cepaberto.com/api/v2/ceps.json?lat=%s&lng=%s" % (
+            lat, lngt)
+
+        try:
+            resposta = urlopen(Request(url, None, self.headers)).read()
+            return json.loads(resposta)
+        except Exception:
             return None
 
     def update_cep_data(self, data):
@@ -243,8 +244,3 @@ class CepSearch():
         else:
             fields = {}
         return fields
-
-    def getCep(self, cepStr):
-        " Retorna um objeto Cep "
-        return self.cepFactory.create(
-            self._zsql_selCepsByNum(cep=cep2int(cepStr))[0])

@@ -54,7 +54,7 @@ class UsuariosPersistencia(object):
 
         if ((not id_usuario and not email) or
                 (id_usuario is None and email is None)):
-            return {}
+            return [{}]
 
         query = 'SELECT * FROM usuarios WHERE 1 = 1 '
 

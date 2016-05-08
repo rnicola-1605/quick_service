@@ -16,7 +16,7 @@ class pesquisaBuscaServico(object):
 
         return None
 
-    def busca_usuarios_proximos_by_coord(self, objUsuario, lat_busca=None,
+    def busca_usuarios_proximos_by_coord(self, objUsuario=None, lat_busca=None,
                                          long_busca=None, lista_servico=[]):
 
         self.conexao = Banco()
@@ -40,9 +40,13 @@ class pesquisaBuscaServico(object):
                  AND ups.valido is TRUE 
                  AND calcular_distancia_geo(%f,%f,u_prestador.latitude_atual,u_prestador.logitude_atual) between 0.00 and 4.99;"""
 
+        if objUsuario is not None:
+            lat_busca  = objUsuario.getLatitude()
+            long_busca = objUsuario.getLongitude()
+
         self.query = self.query % (','.join(str(x.getId()) for x in lista_servico),
-                                   objUsuario.getLatitude(),
-                                   objUsuario.getLongitude())
+                                   lat_busca,
+                                   long_busca)
         cur.execute(self.query)
         sql = cur.fetchall()
         cur.close()

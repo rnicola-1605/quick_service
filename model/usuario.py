@@ -1,4 +1,5 @@
 from DB.BancoDB import Banco
+from pesquisaUsuarios import pesquisaUsuarios
 import os
 
 
@@ -11,7 +12,8 @@ class Usuario(object):
                  nome=None, ddd_telefone=None, telefone=None,
                  ddd_celular=None, celular=None,
                  email=None, cep_atual=None,
-                 latitude_atual=None, longitude_atual=None):
+                 latitude_atual=None, longitude_atual=None,
+                 senha=None):
         self.id_usuario = id_usuario
         self.id_tipo_usuario = id_tipo_usuario
         self.nome = nome
@@ -23,6 +25,9 @@ class Usuario(object):
         self.cep_atual = cep_atual
         self.latitude_atual = latitude_atual
         self.longitude_atual = longitude_atual
+        self.senha = senha
+
+        self.pesquisaUsuarios = pesquisaUsuarios()
 
     def getId(self):
         return self.id_usuario
@@ -93,27 +98,34 @@ class Usuario(object):
 
     def inserir(self):
 
-        self.conexao = Banco().conectar()
+        return self.pesquisaUsuarios.inserir_usuario(
+            self.getIdTipo(),
+            self.getNome(),
+            self.ddd_telefone,
+            self.telefone,
+            self.ddd_celular,
+            self.celular,
+            self.email,
+            self.getCep(),
+            self.getLatitude(),
+            self.getLongitude(),
+            self.senha)
 
-        query = "INSERT INTO usuarios (" +\
-            "id_tipo_usuario," +\
-            "nome, ddd_telefone," +\
-            "telefone,  ddd_celular," +\
-            "celular, email, cep_atual," +\
-            "latitude_atual, longitude_atual, senha) VALUES(" +\
-            "%d, %s, %d, %d, %d, %d, %s, %s, %f, %f, %s);"
+        # query = "INSERT INTO usuarios (" +\
+        #     "id_tipo_usuario," +\
+        #     "nome, ddd_telefone," +\
+        #     "telefone,  ddd_celular," +\
+        #     "celular, email, cep_atual," +\
+        #     "latitude_atual, longitude_atual, senha) VALUES(" +\
+        #     "%d, %s, %d, %d, %d, %d, %s, %s, %f, %f, %s);"
 
-        query % (self.getIdTipo(), self.getNome(),
-                 self.ddd_telefone, self.telefone,
-                 self.ddd_celular, self.celular,
-                 self.email,
-                 self.cep_atual and self.cep_atual or 'null',
-                 self.latitude_atual and self.latitude_atual or 'null',
-                 self.longitude_atual and self.longitude_atual or 'null')
-
-        self.conexao.execute(query)
-
-        self.conexao.close()
+        # query % (self.getIdTipo(), self.getNome(),
+        #          self.ddd_telefone, self.telefone,
+        #          self.ddd_celular, self.celular,
+        #          self.email,
+        #          self.cep_atual and self.cep_atual or 'null',
+        #          self.latitude_atual and self.latitude_atual or 'null',
+        #          self.longitude_atual and self.longitude_atual or 'null')
 
     def mapear(self):
 
