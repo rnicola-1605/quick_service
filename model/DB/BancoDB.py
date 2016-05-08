@@ -20,7 +20,7 @@ class Banco(object):
         try:
             self.conector = psycopg2.connect(self.conexao)
             return self.conector.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        except e:
+        except Exception, e:
             print('Erro ao conectar no banco, erro: %s' % e)
 
     def testar_conexao(self):
