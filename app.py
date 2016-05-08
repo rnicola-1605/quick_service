@@ -6,6 +6,7 @@ from controller.usuarios import Usuarios as UsuariosController
 from controller.servicos import Servicos as ServicosController
 import json as pyjson
 import time
+import os
 
 app = Flask(__name__)
 
@@ -245,5 +246,6 @@ def bd():
     else:
         return "N&atilde;o foi poss&iacute;vel se conectar ao banco."
 
+port = int(os.environ.get("POST", "5000"))
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=True)
+    app.run(debug=True, use_reloader=True, host='0.0.0.0', port=port)
