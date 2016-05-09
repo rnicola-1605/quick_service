@@ -246,7 +246,7 @@ def bd():
     else:
         return "N&atilde;o foi poss&iacute;vel se conectar ao banco."
 
-port = int(os.environ.get("POST", "5000"))
+port = int(os.environ.get('PORT', "5000"))
 if __name__ == "__main__":
     # debug=True, use_reloader=True,
     app.run(host='0.0.0.0', port=port)
