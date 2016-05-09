@@ -1,3 +1,5 @@
+import os
+import urlparse
 import psycopg2
 import psycopg2.extras
 
@@ -8,7 +10,16 @@ class Banco(object):
     """
 
     def __init__(self):
-        self.conexao = 'dbname=quick_service user=postgres password=brd231616 host=localhost'
+
+        urlparse.uses_netloc.append("postgres")
+        url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
+        # self.conexao = 'dbname=quick_service user=postgres password=brd231616 host=localhost'
+        self.conexao = 'dbname=%s user=%s password=%s host=%s port=%s' % (url.path[1:],
+                                                                          url.username,
+                                                                          url.password,
+                                                                          url.hostname,
+                                                                          url.port)
         self.conector = None
 
     def getConector(self):
