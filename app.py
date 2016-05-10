@@ -23,9 +23,7 @@ def not_found(error):
 def index():
     return "<h1 style='color: red'>webservice online.</h1>"
 
-
 @app.route('/busca_usuario/<int:id_usuario>', methods=["POST", "GET"])
-@app.route('/busca_usuario/<str:email>', methods=["POST", "GET"])
 def busca(id_usuario=None, email=None):
     """
     busca dados do usuario
