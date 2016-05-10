@@ -272,7 +272,7 @@ def index():
                           'resposta': 'Atualiza a latitude e longitude do usuario requisitado via parametro'},
                          {'url': 'lista_servicos',
                           'requisicao': ['GET', 'POST'],
-                          'param': ['<int:id_usuario>', '<int:lista_servicos>']
+                          'param': ['<int:id_usuario>', '<int:lista_servicos>'],
                           'resposta': 'Retorna json de todos os servicos que podem' +
                           ' ser prestados atualmente disponiveis'},
                          {'url': 'localiza',
