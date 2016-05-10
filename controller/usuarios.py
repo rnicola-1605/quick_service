@@ -11,6 +11,24 @@ class Usuarios(object):
     def __init__(self):
         self.uPersistencia = UsuariosPersistencia()
 
+    def buscar_usuario(self, dados={}):
+        """
+        Busca dados de um usuario
+        """
+
+        self.user = self.uPersistencia.buscarUsuario(
+            id_usuario=dados['id_usuario'],
+            email=dados['email'])
+
+        if self.user.getId():
+            return {'status': 0,
+                    'msg': 'usuario nao encontrado',
+                    'dados': self.user.getToString()}
+        else:
+            return {'status': 1,
+                    'msg': 'usuario encontrado',
+                    'dados': self.user.getToString()}
+
     def cadastrar_usuario(self, dados={}):
         """
         Recebe na request dicionarios com as informacoes
