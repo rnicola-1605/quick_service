@@ -50,6 +50,7 @@ class pesquisaUsuarios(object):
             self.conexao.getConector().commit()
             self.ok = True
         except Exception, e:
+            print e
             self.ok = False
 
         cur.close()
