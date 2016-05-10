@@ -268,7 +268,7 @@ def index():
                           'requisicao': ['GET', 'POST'],
                           'param': ['<int:id_usuario>',
                                     '<float:latitude>',
-                                    '<float:longitude>']
+                                    '<float:longitude>'],
                           'resposta': 'Atualiza a latitude e longitude do usuario requisitado via parametro'},
                          {'url': 'lista_servicos',
                           'requisicao': ['GET', 'POST'],
