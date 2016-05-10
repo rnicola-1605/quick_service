@@ -224,7 +224,7 @@ def atualiza_localizacao(id_usuario, latitude, longitude):
 
 
 @app.route('/localiza/<int:id_usuario>/<int:lista_servicos>')
-@app.route('/localiza/<float:latitude>/<float:longitude>')
+@app.route('/localiza_one/<float:latitude>/<float:longitude>')
 @app.route('/localiza/<float:latitude>/<float:longitude>/<int:lista_servicos>')
 def localiza_servicos(id_usuario=None, latitude=None,
                       longitude=None, lista_servicos=[1, 2, 8]):
