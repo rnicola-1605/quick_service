@@ -26,7 +26,7 @@ def index():
 @app.route('/busca_usuario/<int:id_usuario>', methods=["POST", "GET"])
 def busca(id_usuario=None, email=None):
     """
-    busca dados do usuario
+    busca dados do usuarios
     """
 
     res = usuarios.buscar_usuario(dados={'id_usuario': id_usuario,
