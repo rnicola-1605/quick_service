@@ -19,11 +19,6 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}))
 
 
-@app.route('/')
-@app.route('/index')
-def index():
-    return "<h1 style='color: red'>webservice online.</h1>"
-
 @app.route('/busca_usuario/<int:id_usuario>', methods=["POST", "GET"])
 def busca(id_usuario=None, email=None):
     """
@@ -257,6 +252,60 @@ def bd():
         return "Banco conectado."
     else:
         return "N&atilde;o foi poss&iacute;vel se conectar ao banco."
+
+
+@app.route('/')
+@app.route('/index')
+def index():
+    jsonify({'metodos': [{'url': '/bd',
+                          'requisicao': ['GET'],
+                          'resposta': 'Retorna uma index basica identificando que banco do app está rodando'},
+                         {'url': '/atualiza_ceps',
+                          'requisicao': ['GET', 'POST'],
+                          'resposta': 'Atualiza todos os usuarios com cep ou latitude ou ' +
+                          'longitude invalidos e retorna json com as informacoes dos atualizados'},
+                         {'url': 'atualiza_localizacao',
+                          'requisicao': ['GET', 'POST'],
+                          'param': ['<int:id_usuario>',
+                                    '<float:latitude>',
+                                    '<float:longitude>']
+                          'resposta': 'Atualiza a latitude e longitude do usuario requisitado via parametro'},
+                         {'url': 'lista_servicos',
+                          'requisicao': ['GET', 'POST'],
+                          'param': ['<int:id_usuario>', '<int:lista_servicos>']
+                          'resposta': 'Retorna json de todos os servicos que podem' +
+                          ' ser prestados atualmente disponiveis'},
+                         {'url': 'localiza',
+                          'requisicao': ['GET', 'POST'],
+                          'resposta': 'Busca prestadores de servico que prestam os servicos' +
+                          ' do parametro <int:lista_servicos> em um raio de 5km da posicao atual' +
+                          ' do usuario <int:id_usuario>. Retorna json com as informacoes.'},
+                         {'url': 'localiza_one',
+                          'requisicao': ['GET', 'POST'],
+                          'param': ['<float:latitude>',
+                                    '<float:longitude>'],
+                          'resposta': 'Busca prestadores de servico que estejam em um raio de ' +
+                          '5KM da posicao atual de <float:latitude> e <float:longitude>. ' +
+                          'Retorna json com as informacoes.'},
+                         {'url': 'cadastra ',
+                          'requisicao': ['POST JSON', 'GET JSON'],
+                          'param': ['<int:id_tipo_usuario> (1 para prestador ou 2 para cliente)',
+                                    '<str:nome>', '<str:email>', '<str:senha>',
+                                    '<float:latitude>', '<float:longitude>',
+                                    '<str:cep> (opcional)'],
+                          'resposta': 'Cadastra um novo usuario no sistema e ' +
+                          'retorna json com o status 0 para erro ou 1 para ok'},
+                         {'url': 'adiciona_servico',
+                          'requisicao': ['POST JSON', 'GET JSON'],
+                          'param': ['<int:id_usuario>', '<int:id_servico>'],
+                          'resposta': 'Adiciona um servico que um prestador pode ' +
+                          'prestar e retorna json com status 0 para erro ou 1 para ok'}
+                         {'url': 'deleta_servico',
+                          'requisicao': ['POST JSON', 'GET JSON'],
+                          'param': ['<int:id_usuario>', '<int:id_servico>'],
+                          'resposta': 'Deleta um servico que um prestador pode prestar ' +
+                          'e retorna json com status 0 para erro ou 1 para ok'}
+                         ]})
 
 port = int(os.environ.get('PORT', "5000"))
 if __name__ == "__main__":
