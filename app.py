@@ -299,7 +299,7 @@ def index():
                           'requisicao': ['POST JSON', 'GET JSON'],
                           'param': ['<int:id_usuario>', '<int:id_servico>'],
                           'resposta': 'Adiciona um servico que um prestador pode ' +
-                          'prestar e retorna json com status 0 para erro ou 1 para ok'}
+                          'prestar e retorna json com status 0 para erro ou 1 para ok'},
                          {'url': 'deleta_servico',
                           'requisicao': ['POST JSON', 'GET JSON'],
                           'param': ['<int:id_usuario>', '<int:id_servico>'],
