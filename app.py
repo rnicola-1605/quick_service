@@ -259,7 +259,7 @@ def bd():
 def index():
     jsonify({'metodos': [{'url': '/bd',
                           'requisicao': ['GET'],
-                          'resposta': 'Retorna uma index basica identificando que banco do app está rodando'},
+                          'resposta': 'Retorna uma index basica identificando que banco do app est&aacute; rodando'},
                          {'url': '/atualiza_ceps',
                           'requisicao': ['GET', 'POST'],
                           'resposta': 'Atualiza todos os usuarios com cep ou latitude ou ' +
