@@ -20,6 +20,7 @@ def not_found(error):
 
 
 @app.route('/')
+@app.route('/index')
 def index():
     return "<h1 style='color: red'>webservice online.</h1>"
 

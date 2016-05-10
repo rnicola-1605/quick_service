@@ -20,7 +20,7 @@ class Usuarios(object):
             id_usuario=dados['id_usuario'],
             email=dados['email'])
 
-        if self.user.getId():
+        if not self.user.getId():
             return {'status': 0,
                     'msg': 'usuario nao encontrado',
                     'dados': self.user.getToString()}
