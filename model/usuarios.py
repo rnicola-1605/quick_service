@@ -49,6 +49,34 @@ class UsuariosPersistencia(object):
                                       latitude_atual=latitude_atual,
                                       longitude_atual=longitude_atual)
 
+    def buscarUsuarioCrendenciais(self, email, senha):
+
+        query = (
+            ("""SELECT *
+                FROM usuarios WHERE email = '%s'
+                                    AND senha = '%s'""") % (email, senha))
+        self.conexao = Banco()
+        cur = self.conexao.conectar()
+        cur.execute(query)
+        sql = cur.fetchall()
+        cur.close()
+
+        for u in sql:
+            return self.criaUsuario(
+                id_usuario=a['id_usuario'],
+                id_tipo_usuario=a['id_tipo_usuario'],
+                nome=a['nome'],
+                ddd_telefone=a['ddd_telefone'],
+                telefone=a['telefone'],
+                ddd_celular=a['ddd_celular'],
+                celular=a['celular'],
+                email=a['email'],
+                cep_atual=a['cep_atual'],
+                latitude_atual=a['latitude_atual'],
+                longitude_atual=a['logitude_atual'])
+        else:
+            return self.criaUsuario()
+
     def buscarUsuario(self, id_usuario=None,
                       email=None):
 

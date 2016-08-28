@@ -79,9 +79,8 @@ class PrestadorPersistente(Prestador):
 
     def atualizar_cep_by_lat_long(self, lat_novo, long_novo):
 
-        _dados = self.cepPersistencia.\
-            get_cep_by_lat_long(lat=lat_novo,
-                                lngt=long_novo)
+        _dados = self.cepPersistencia.get_cep_by_lat_long(lat=lat_novo,
+                                                          lngt=long_novo)
 
         return self.pesquisaUsuarios._atualizaCep(
             cep=_dados['cep'],

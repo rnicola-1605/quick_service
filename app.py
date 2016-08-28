@@ -26,7 +26,21 @@ def busca(id_usuario=None, email=None):
     """
 
     res = usuarios.buscar_usuario(dados={'id_usuario': id_usuario,
-                                         'email': email})
+                                         'email': email},
+                                  tipo_busca=1)
+
+    return jsonify(res)
+
+
+@app.route('/', methods=["GET", "POST"])
+def busca_credenciais(email=None, senha=None):
+    """
+    busca dados do usuario apatir das credenciais
+    """
+
+    res = usuarios.buscar_usuario(tipo_busca=2,
+                                  dados={'email': email,
+                                         'senha': senha})
 
     return jsonify(res)
 

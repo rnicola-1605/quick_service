@@ -11,14 +11,23 @@ class Usuarios(object):
     def __init__(self):
         self.uPersistencia = UsuariosPersistencia()
 
-    def buscar_usuario(self, dados={}):
+    def buscar_usuario(self, dados={}, tipo_busca=None):
         """
-        Busca dados de um usuario
+        Busca dados de um usuario.
+        tipo_busca: 1 (busca pelo id ou pelo email)
+        tipo_busca: 2 (busca de acordo com as credencias pelo app)
         """
 
-        self.user = self.uPersistencia.buscarUsuario(
-            id_usuario=dados['id_usuario'],
-            email=dados['email'])
+        if tipo_busca == 1:
+            self.user = self.uPersistencia.buscarUsuario(
+                id_usuario=dados['id_usuario'],
+                email=dados['email'])
+        elif tipo_busca == 2:
+            self.user = self.uPersistencia.buscarUsuarioCrendenciais(
+                email=dados['email'],
+                senha=dados['senha'])
+        else:
+            self.user = self.uPersistencia.criaUsuario()
 
         if not self.user.getId():
             return {'status': 0,
